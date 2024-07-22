@@ -1,0 +1,2 @@
+Flask
+snowflake-connector-python
