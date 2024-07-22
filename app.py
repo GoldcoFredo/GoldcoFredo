@@ -4,15 +4,15 @@ import os
 
 app = Flask(__name__)
 
-# Load Snowflake connection parameters from environment variables
+# Load Snowflake connection parameters directly
 conn = snowflake.connector.connect(
-    user=os.getenv('apalacios'),
-    password=os.getenv('.Goldco2024'),
-    account=os.getenv('IOLOBUQ-TB67249'),
-    warehouse=os.getenv('SYS_WH'),
-    database=os.getenv('MARKET'),
-    schema=os.getenv('NATIONALMARKET'),
-    role=os.getenv('SYSADMIN')
+    user='apalacios',
+    password='.Goldco2024',
+    account='IOLOBUQ-TB67249',
+    warehouse='SYS_WH',
+    database='MARKET',
+    schema='NATIONALMARKET',
+    role='SYSADMIN'
 )
 
 # Create a cursor object
