@@ -1,2 +1,6 @@
-Flask
 snowflake-connector-python
+Flask==2.0.2
+Werkzeug==2.0.2
+Flask-Cors>=1.10.0
+numpy==1.22.3
+gunicorn

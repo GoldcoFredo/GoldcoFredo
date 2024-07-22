@@ -3,96 +3,79 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Product Management</title>
-    <link rel="stylesheet" href="index.css">
+    <title>Product Management App</title>
+    <link rel="stylesheet" href="styles.css">
 </head>
 <body>
-    <div class="container">
-        <!-- Sidebar Menu -->
-        <nav class="sidebar">
-            <ul>
-                <li><button onclick="showSection('retrieve-products')">Retrieve Products</button></li>
-                <li><button onclick="showSection('add-product')">Add Product</button></li>
-                <li><button onclick="clearProducts()">Clear Products</button></li>
-                <li><button onclick="showSection('upload-to-stage')">Upload to Stage</button></li>
-                <li><button onclick="clearStage()">Clear Stage</button></li>
-                <li><button onclick="executeTask()">Execute Task</button></li>
-            </ul>
-        </nav>
+    <div class="sidebar">
+        <h2>Menu</h2>
+        <button onclick="queryProducts()">Query Products</button>        
+        <button onclick="showUploadForm()">Upload to Stage</button>
+        <button onclick="executeTask()">Execute Task</button>
+        <button onclick="clearProductStages()">Clear Product Stages</button>
+        <button onclick="truncateProductTable()">Truncate Product Table</button>
+		 <button onclick="showAddProductForm()">Add Product</button>
+    </div>
+    <div class="content">
+        <h1>Products</h1>
+        <table id="productsTable">
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Name</th>
+                    <th>Brand</th>
+                    <th>Height</th>
+                    <th>Width</th>
+                    <th>Depth</th>
+                    <th>Weight</th>
+                    <th>Package Type</th>
+                    <th>Price</th>
+                </tr>
+            </thead>
+            <tbody></tbody>
+        </table>
+    </div>
+   
+	<div id="uploadForm" class="modal" style="display:none;">
+	    <div class="modal-content">
+        	<span class="close" onclick="hideUploadForm()">&times;</span>
+        		<h2>Upload File to Stage</h2>
+        		<form id="uploadFileForm" enctype="multipart/form-data" onsubmit="event.preventDefault(); uploadFile();">
+        	    		<input type="file" id="file-input">
+      	      			<button type="submit">Upload</button>
+        		</form>
+    		</div>
+	</div>
 
-        <!-- Main Content -->
-        <main class="content">
-            <!-- Table Section -->
-            <section id="retrieve-products" class="section visible">
-                <h2>Product List</h2>
-                <table id="product-table">
-                    <thead>
-                        <tr>
-                            <th>ID</th>
-                            <th>Product Name</th>
-                            <th>Brand</th>
-                            <th>Height</th>
-                            <th>Width</th>
-                            <th>Depth</th>
-                            <th>Weight</th>
-                            <th>Package Type</th>
-                            <th>Price</th>
-                            <th>Actions</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <!-- Rows will be dynamically inserted here -->
-                    </tbody>
-                </table>
-            </section>
-
-            <!-- Add Product Section -->
-            <section id="add-product" class="section">
-                <h2>Add Product</h2>
-                <form id="add-product-form">
-                    <input type="text" id="product-name" placeholder="Product Name" required>
-                    <input type="text" id="brand" placeholder="Brand" required>
-                    <input type="number" id="height" placeholder="Height" step="any" required>
-                    <input type="number" id="width" placeholder="Width" step="any" required>
-                    <input type="number" id="depth" placeholder="Depth" step="any" required>
-                    <input type="number" id="weight" placeholder="Weight" step="any" required>
-                    <input type="text" id="package-type" placeholder="Package Type" required>
-                    <input type="number" id="price" placeholder="Price" step="any" required>
-                    <button type="submit">Add Product</button>
-                    <button type="button" onclick="hideSection('add-product')">Cancel</button>
-                </form>
-            </section>
-
-            <!-- Upload to Stage Section -->
-            <section id="upload-to-stage" class="section">
-                <h2>Upload to Stage</h2>
-                <form id="upload-form">
-                    <input type="file" id="file-upload" required>
-                    <button type="submit">Upload</button>
-                    <button type="button" onclick="hideSection('upload-to-stage')">Cancel</button>
-                </form>
-            </section>
-
-            <!-- Edit Product Section (initially hidden) -->
-            <section id="edit-product" class="section">
-                <h2>Edit Product</h2>
-                <form id="edit-product-form">
-                    <input type="hidden" id="edit-id">
-                    <input type="text" id="edit-product-name" placeholder="Product Name" required>
-                    <input type="text" id="edit-brand" placeholder="Brand" required>
-                    <input type="number" id="edit-height" placeholder="Height" step="any" required>
-                    <input type="number" id="edit-width" placeholder="Width" step="any" required>
-                    <input type="number" id="edit-depth" placeholder="Depth" step="any" required>
-                    <input type="number" id="edit-weight" placeholder="Weight" step="any" required>
-                    <input type="text" id="edit-package-type" placeholder="Package Type" required>
-                    <input type="number" id="edit-price" placeholder="Price" step="any" required>
-                    <button type="submit">Save Changes</button>
-                    <button type="button" onclick="hideSection('edit-product')">Cancel</button>
-                </form>
-            </section>
-        </main>
+    <div id="addProductModal" class="modal" style="display:none;">
+        <div class="modal-content">
+            <span class="close" onclick="hideAddProductForm()">&times;</span>
+            <h2>Add Product</h2>
+            <form id="addProductForm">
+                <label for="id_product">Product ID:</label>
+                <input type="text" id="id_product" name="id_product" required>
+                <label for="product_name">Product Name:</label>
+                <input type="text" id="product_name" name="product_name" required>
+                <label for="brand">Brand:</label>
+                <input type="text" id="brand" name="brand" required>
+                <label for="height">Height:</label>
+                <input type="number" id="height" name="height" step="0.01" required>
+                <label for="width">Width:</label>
+                <input type="number" id="width" name="width" step="0.01" required>
+                <label for="depth">Depth:</label>
+                <input type="number" id="depth" name="depth" step="0.01" required>
+                <label for="weight">Weight:</label>
+                <input type="number" id="weight" name="weight" step="0.01" required>
+                <label for="package_type">Package Type:</label>
+                <input type="text" id="package_type" name="package_type" required>
+                <label for="price">Price:</label>
+                <input type="number" id="price" name="price" step="0.01" required>
+                <button type="submit">Add Product</button>
+                <button type="button" onclick="hideAddProductForm()">Cancel</button>
+            </form>
+        </div>
     </div>
 
-    <script src="index.js"></script>
+    <script src="scripts.js"></script>
 </body>
-</html>
+</html
