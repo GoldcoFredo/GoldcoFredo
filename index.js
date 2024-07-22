@@ -17,9 +17,20 @@ document.addEventListener('DOMContentLoaded', () => {
         document.getElementById(sectionId).classList.remove('visible');
     };
 
+    // Function to show a floating message
+    function showFloatingMessage(message, type='info') {
+        const messageElement = document.getElementById('floating-message');
+        messageElement.textContent = message;
+        messageElement.className = `floating-message ${type}`;
+        messageElement.style.display = 'block';
+        setTimeout(() => {
+            messageElement.style.display = 'none';
+        }, 5000); // Hide message after 5 seconds
+    }
+
     // Function to retrieve products from the backend
     window.retrieveProducts = function() {
-        fetch('https://gfbackend.onrender.com/products')
+        fetch('https://gfbackend.onrender.com/query_products')
             .then(response => response.json())
             .then(data => {
                 const tableBody = document.getElementById('product-table').getElementsByTagName('tbody')[0];
@@ -42,31 +53,31 @@ document.addEventListener('DOMContentLoaded', () => {
                     `;
                 });
             })
-            .catch(error => console.error('Error retrieving products:', error));
+            .catch(error => showFloatingMessage('Error retrieving products: ' + error.message, 'error'));
     };
 
     // Function to clear all products
     window.clearProducts = function() {
-        fetch('https://gfbackend.onrender.com/clear-products', { method: 'POST' })
+        fetch('https://gfbackend.onrender.com/truncate_product_table', { method: 'POST' })
             .then(response => response.json())
-            .then(data => alert(data.message))
-            .catch(error => console.error('Error clearing products:', error));
+            .then(data => showFloatingMessage(data.message))
+            .catch(error => showFloatingMessage('Error clearing products: ' + error.message, 'error'));
     };
 
     // Function to clear the stage
     window.clearStage = function() {
-        fetch('https://gfbackend.onrender.com/clear-stage', { method: 'POST' })
+        fetch('https://gfbackend.onrender.com/clear_product_stages', { method: 'POST' })
             .then(response => response.json())
-            .then(data => alert(data.message))
-            .catch(error => console.error('Error clearing stage:', error));
+            .then(data => showFloatingMessage(data.message))
+            .catch(error => showFloatingMessage('Error clearing stage: ' + error.message, 'error'));
     };
 
     // Function to execute a task
     window.executeTask = function() {
-        fetch('https://gfbackend.onrender.com/execute-task', { method: 'POST' })
+        fetch('https://gfbackend.onrender.com/execute_task', { method: 'POST' })
             .then(response => response.json())
-            .then(data => alert(data.message))
-            .catch(error => console.error('Error executing task:', error));
+            .then(data => showFloatingMessage(data.message))
+            .catch(error => showFloatingMessage('Error executing task: ' + error.message, 'error'));
     };
 
     // Function to add a product
@@ -81,7 +92,7 @@ document.addEventListener('DOMContentLoaded', () => {
         const packageType = document.getElementById('package-type').value;
         const price = parseFloat(document.getElementById('price').value);
 
-        fetch('https://gfbackend.onrender.com/add-product', {
+        fetch('https://gfbackend.onrender.com/add_product', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({
@@ -97,11 +108,11 @@ document.addEventListener('DOMContentLoaded', () => {
         })
         .then(response => response.json())
         .then(data => {
-            alert(data.message);
+            showFloatingMessage(data.message);
             hideSection('add-product');
             retrieveProducts(); // Refresh product list
         })
-        .catch(error => console.error('Error adding product:', error));
+        .catch(error => showFloatingMessage('Error adding product: ' + error.message, 'error'));
     }
 
     // Function to edit a product
@@ -120,7 +131,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 document.getElementById('edit-price').value = product.PRICE;
                 showSection('edit-product');
             })
-            .catch(error => console.error('Error fetching product for edit:', error));
+            .catch(error => showFloatingMessage('Error fetching product for edit: ' + error.message, 'error'));
     };
 
     // Function to handle editing the product
@@ -152,11 +163,11 @@ document.addEventListener('DOMContentLoaded', () => {
         })
         .then(response => response.json())
         .then(data => {
-            alert(data.message);
+            showFloatingMessage(data.message);
             hideSection('edit-product');
             retrieveProducts(); // Refresh product list
         })
-        .catch(error => console.error('Error editing product:', error));
+        .catch(error => showFloatingMessage('Error editing product: ' + error.message, 'error'));
     }
 
     // Function to delete a product
@@ -164,10 +175,10 @@ document.addEventListener('DOMContentLoaded', () => {
         fetch(`https://gfbackend.onrender.com/delete-product/${id}`, { method: 'DELETE' })
             .then(response => response.json())
             .then(data => {
-                alert(data.message);
+                showFloatingMessage(data.message);
                 retrieveProducts(); // Refresh product list
             })
-            .catch(error => console.error('Error deleting product:', error));
+            .catch(error => showFloatingMessage('Error deleting product: ' + error.message, 'error'));
     };
 
     // Function to handle file upload
@@ -177,15 +188,16 @@ document.addEventListener('DOMContentLoaded', () => {
         const formData = new FormData();
         formData.append('file', fileInput.files[0]);
 
-        fetch('https://gfbackend.onrender.com/upload', {
+        fetch('https://gfbackend.onrender.com/upload_to_stage', {
             method: 'POST',
-            body: formData
+            body: JSON.stringify({ file_path: fileInput.files[0].name }),
+            headers: { 'Content-Type': 'application/json' }
         })
         .then(response => response.json())
         .then(data => {
-            alert(data.message);
+            showFloatingMessage(data.message);
             hideSection('upload-to-stage');
         })
-        .catch(error => console.error('Error uploading file:', error));
+        .catch(error => showFloatingMessage('Error uploading file: ' + error.message, 'error'));
     }
 });
