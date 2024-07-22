@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Product Management</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="container">
+        <!-- Sidebar Menu -->
+        <nav class="sidebar">
+            <ul>
+                <li><button onclick="showSection('retrieve-products')">Retrieve Products</button></li>
+                <li><button onclick="showSection('add-product')">Add Product</button></li>
+                <li><button onclick="clearProducts()">Clear Products</button></li>
+                <li><button onclick="showSection('upload-to-stage')">Upload to Stage</button></li>
+                <li><button onclick="clearStage()">Clear Stage</button></li>
+                <li><button onclick="executeTask()">Execute Task</button></li>
+            </ul>
+        </nav>
+
+        <!-- Main Content -->
+        <main class="content">
+            <!-- Table Section -->
+            <section id="retrieve-products" class="section visible">
+                <h2>Product List</h2>
+                <table id="product-table">
+                    <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>Product Name</th>
+                            <th>Brand</th>
+                            <th>Height</th>
+                            <th>Width</th>
+                            <th>Depth</th>
+                            <th>Weight</th>
+                            <th>Package Type</th>
+                            <th>Price</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <!-- Rows will be dynamically inserted here -->
+                    </tbody>
+                </table>
+            </section>
+
+            <!-- Add Product Section -->
+            <section id="add-product" class="section">
+                <h2>Add Product</h2>
+                <form id="add-product-form">
+                    <input type="text" id="product-name" placeholder="Product Name" required>
+                    <input type="text" id="brand" placeholder="Brand" required>
+                    <input type="number" id="height" placeholder="Height" step="any" required>
+                    <input type="number" id="width" placeholder="Width" step="any" required>
+                    <input type="number" id="depth" placeholder="Depth" step="any" required>
+                    <input type="number" id="weight" placeholder="Weight" step="any" required>
+                    <input type="text" id="package-type" placeholder="Package Type" required>
+                    <input type="number" id="price" placeholder="Price" step="any" required>
+                    <button type="submit">Add Product</button>
+                    <button type="button" onclick="hideSection('add-product')">Cancel</button>
+                </form>
+            </section>
+
+            <!-- Upload to Stage Section -->
+            <section id="upload-to-stage" class="section">
+                <h2>Upload to Stage</h2>
+                <form id="upload-form">
+                    <input type="file" id="file-upload" required>
+                    <button type="submit">Upload</button>
+                    <button type="button" onclick="hideSection('upload-to-stage')">Cancel</button>
+                </form>
+            </section>
+
+            <!-- Edit Product Section (initially hidden) -->
+            <section id="edit-product" class="section">
+                <h2>Edit Product</h2>
+                <form id="edit-product-form">
+                    <input type="hidden" id="edit-id">
+                    <input type="text" id="edit-product-name" placeholder="Product Name" required>
+                    <input type="text" id="edit-brand" placeholder="Brand" required>
+                    <input type="number" id="edit-height" placeholder="Height" step="any" required>
+                    <input type="number" id="edit-width" placeholder="Width" step="any" required>
+                    <input type="number" id="edit-depth" placeholder="Depth" step="any" required>
+                    <input type="number" id="edit-weight" placeholder="Weight" step="any" required>
+                    <input type="text" id="edit-package-type" placeholder="Package Type" required>
+                    <input type="number" id="edit-price" placeholder="Price" step="any" required>
+                    <button type="submit">Save Changes</button>
+                    <button type="button" onclick="hideSection('edit-product')">Cancel</button>
+                </form>
+            </section>
+        </main>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
