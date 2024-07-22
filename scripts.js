@@ -1,4 +1,4 @@
-const apiUrl = 'https://goldcofredo-backend.onrender.com'; // Replace with your actual Render URL
+const apiUrl = 'https://gfbackend.onrender.com'; // Updated URL
 
 function queryProducts() {
     fetch(`${apiUrl}/queryProducts`)
@@ -57,7 +57,6 @@ function uploadFile() {
         console.error('No file selected');
     }
 }
-
 
 function executeTask() {
     fetch(`${apiUrl}/executeTask`, {
